@@ -7,21 +7,24 @@
     
     <style>
         :root {
-            --bg: #faf8f5;
-            --text: #2b2927;
-            --muted: #736d68;
-            --accent: #bd6a4f;
-            --line: #e6dfd7;
-            --serif: "Georgia", serif;
-            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --bg: #fcfbf9;         /* Soft milky white */
+            --text: #3c3936;       /* Soft warm charcoal */
+            --muted: #a39e99;      /* Delicate cloud gray */
+            --accent: #e5a995;     /* Soft dusty peach/rose */
+            --accent-bg: #f7edea;  /* Faint blush tint */
+            --line: #f0ede9;       /* Barely-there soft cream borders */
+            --tag-zine: #fdf5e2;   /* Soft pudding yellow */
+            --sans: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body.dark {
-            --bg: #1a1817;
-            --text: #f0eae1;
-            --muted: #9c938a;
-            --accent: #e08367;
-            --line: #2e2a28;
+            --bg: #1e1b1a;
+            --text: #e8e3df;
+            --muted: #8c8580;
+            --accent: #f2c2b1;
+            --accent-bg: #2d2523;
+            --line: #2b2624;
+            --tag-zine: #333023;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,27 +32,62 @@
             font-family: var(--sans);
             color: var(--text);
             background-color: var(--bg);
-            line-height: 1.6;
+            line-height: 1.65;
             padding: 5rem 2rem;
             transition: background 0.3s, color 0.3s;
+            letter-spacing: -0.01em;
         }
 
         .container {
-            max-width: 680px;
+            max-width: 620px;
             margin: 0 auto;
         }
 
         header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: flex-start;
             margin-bottom: 4rem;
         }
 
+        .header-title-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
         h1 {
-            font-family: var(--serif);
-            font-size: 1.5rem;
-            font-weight: 400;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--accent-bg);
+            color: var(--text);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            width: fit-content;
+            border: 1px solid rgba(229, 169, 149, 0.15);
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            display: inline-block;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.5; }
         }
 
         .toggle-btn {
@@ -57,11 +95,17 @@
             border: none;
             color: var(--muted);
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-family: var(--sans);
+            padding: 4px 8px;
+            border-radius: 12px;
+            transition: all 0.2s;
         }
-        .toggle-btn:hover { color: var(--text); }
+        .toggle-btn:hover { 
+            color: var(--text); 
+            background-color: var(--line);
+        }
 
-        /* CENTERED PHOTO CONTAINER ABOVE BIO */
         .photo-header-wrap {
             display: flex;
             justify-content: center;
@@ -70,13 +114,23 @@
         }
 
         .profile-photo {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
             object-fit: cover;
-            border: 1px solid var(--line);
-            padding: 5px;
-            background: var(--bg);
+            border: 4px solid #fff;
+            box-shadow: 0 8px 24px rgba(189, 175, 165, 0.15);
+            background: #fff;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .photo-header-wrap:hover .profile-photo {
+            border-radius: 50% 50% 50% 50%;
+            transform: scale(1.04) rotate(2deg);
+            box-shadow: 0 12px 28px rgba(189, 175, 165, 0.25);
+        }
+        body.dark .profile-photo {
+            border-color: #2b2624;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .intro-block {
@@ -84,127 +138,275 @@
         }
         
         .intro-text p {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             margin-bottom: 1.5rem;
+            font-weight: 400;
         }
 
         a {
             color: var(--text);
             text-decoration: none;
-            border-bottom: 1px solid var(--line);
-            transition: all 0.2s;
+            border-bottom: 2px solid var(--accent-bg);
+            transition: all 0.2s ease-in-out;
         }
         a:hover {
-            color: var(--accent);
+            color: var(--text);
+            background-color: var(--accent-bg);
             border-color: var(--accent);
         }
 
         .meta-links {
             display: flex;
-            gap: 1.5rem;
-            font-size: 0.95rem;
+            gap: 1.25rem;
+            font-size: 0.9rem;
             margin-top: 2.5rem;
         }
-        .meta-links a { color: var(--muted); border: none; }
-        .meta-links a:hover { color: var(--text); text-decoration: underline; }
+        .meta-links a { 
+            color: var(--muted); 
+            border: 1px solid var(--line); 
+            padding: 0.35rem 0.85rem; 
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        .meta-links a:hover { 
+            color: var(--text); 
+            border-color: var(--accent);
+            background-color: transparent;
+        }
 
         section {
-            margin-bottom: 4.5rem;
-            padding-top: 2rem;
-            border-top: 1px dashed var(--line);
+            margin-bottom: 4rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--line);
         }
 
         h2 {
-            font-family: var(--serif);
-            font-size: 1.1rem;
-            font-weight: 400;
-            font-style: italic;
+            font-size: 1rem;
+            font-weight: 700;
             color: var(--muted);
             margin-bottom: 1.75rem;
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
         }
 
         .thoughts-stream {
-            font-size: 1rem;
+            font-size: 0.98rem;
         }
         .thoughts-stream p {
             margin-bottom: 1.25rem;
         }
         .keyword {
-            font-family: var(--serif);
-            color: var(--accent);
-            font-style: italic;
+            background-color: var(--accent-bg);
+            color: var(--text);
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+            font-weight: 500;
         }
 
         .item-list {
             display: flex;
             flex-direction: column;
-            gap: 2.25rem;
+            gap: 2rem;
         }
 
         .pub-item {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: 0.3rem;
+            padding: 1rem;
+            border-radius: 16px;
+            transition: background 0.2s;
+        }
+        .pub-item:hover {
+            background-color: var(--accent-bg);
         }
 
         .title {
             font-size: 1.05rem;
-            font-weight: 500;
+            font-weight: 600;
+            line-height: 1.4;
         }
         .authors {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text);
+            opacity: 0.85;
         }
         .venue {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--muted);
-            font-style: italic;
         }
         .links {
-            font-size: 0.85rem;
-            margin-top: 0.2rem;
+            font-size: 0.82rem;
+            margin-top: 0.4rem;
             display: flex;
             align-items: center;
         }
         .links a, .bibtex-btn {
-            color: var(--accent);
-            border: none;
-            margin-right: 0.75rem;
+            color: var(--text);
+            opacity: 0.6;
+            border: 1px solid var(--line);
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            margin-right: 0.5rem;
             cursor: pointer;
-            background: none;
-            font-size: 0.85rem;
+            background: #fff;
+            font-size: 0.8rem;
             font-family: var(--sans);
+            transition: all 0.2s;
         }
-        .links a:hover, .bibtex-btn:hover { text-decoration: underline; }
+        body.dark .links a, body.dark .bibtex-btn {
+            background: #2b2624;
+        }
+        .links a:hover, .bibtex-btn:hover { 
+            opacity: 1;
+            border-color: var(--accent);
+            background-color: var(--bg);
+        }
         
         .copy-feedback {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--muted);
-            font-style: italic;
+            margin-left: 0.25rem;
             opacity: 0;
             transition: opacity 0.2s ease;
         }
         .copy-feedback.show { opacity: 1; }
 
+        /* MINIMAL EDITORIAL TIMELINE */
+        .log-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--line);
+        }
+        .log-entry {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .log-entry::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--bg);
+            border: 2px solid var(--muted);
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .log-entry:hover::before {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .log-meta {
+            display: inline-flex;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .log-tag {
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            letter-spacing: 0.02em;
+        }
+        .log-tag.zine { background-color: var(--tag-zine); }
+        
+        .log-title {
+            font-size: 1.02rem;
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+        .log-desc {
+            font-size: 0.92rem;
+            opacity: 0.85;
+            margin-bottom: 0.5rem;
+        }
+        .log-links {
+            font-size: 0.8rem;
+        }
+        .log-links a {
+            color: var(--muted);
+            border-bottom: 1px solid var(--line);
+        }
+        .log-links a:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        /* GALLERY GRID */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 18px;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(189, 175, 165, 0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-color: var(--line);
+            width: 100%;
+        }
+        body.dark .gallery-item {
+            border-color: #2b2624;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05) rotate(1deg);
+            z-index: 2;
+        }
+        .gallery-caption {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.4rem;
+            font-style: italic;
+        }
+
         footer {
             margin-top: 6rem;
             font-size: 0.8rem;
             color: var(--muted);
+            text-align: center;
         }
 
         @media (max-width: 600px) {
-            body { padding: 3rem 1.5rem; }
+            body { padding: 3rem 1.25rem; }
             header { margin-bottom: 2.5rem; }
             .photo-header-wrap { margin-bottom: 2.5rem; }
-            .profile-photo { width: 140px; height: 140px; }
+            .profile-photo { width: 130px; height: 130px; }
+            .meta-links { flex-wrap: wrap; gap: 0.5rem; }
+            .photo-gallery { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>miriam brody</h1>
+            <div class="header-title-area">
+                <h1>miriam brody</h1>
+                <div class="status-pill">
+                    <span class="status-dot"></span>📍 researching in vienna, austria
+                </div>
+            </div>
             <button class="toggle-btn" id="tier">switch appearance</button>
         </header>
 
@@ -270,7 +472,7 @@ articleno = {41},
 numpages = {14},
 series = {ASSETS '25}
 }">bibtex</button>
-                            <span class="copy-feedback">copied!</span>
+                            <span class="copy-feedback">copied! 🍉</span>
                         </div>
                     </div>
 
@@ -285,7 +487,7 @@ series = {ASSETS '25}
 author = {Osborn, Joseph Carter and Wieser, Katiana, Miriam Brody},
 title = {RetroFit: Post-Facto Accessibility for Retro Games},
 year = {2024},
-isbn = {9798400709555},
+isbn = {97984007095555},
 publisher = {Association for Computing Machinery},
 address = {New York, NY, USA},
 url = {https://doi.org/10.1145/3649921.3656978},
@@ -296,8 +498,57 @@ numpages = {4},
 keywords = {accessibility, automated game design learning, scene understanding},
 series = {FDG '24}
 }">bibtex</button>
-                            <span class="copy-feedback">copied!</span>
+                            <span class="copy-feedback">copied! 👾</span>
                         </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- EDITORIAL MINIMAL MAKER TIMELINE -->
+            <section id="creative-log">
+                <h2>making</h2>
+                <div class="log-timeline">
+                    
+                    <div class="log-entry">
+                        <div class="log-meta">
+                            <span class="log-tag zine">Zines</span>
+                            <span style="color: var(--muted);">/ Spring 2026</span>
+                        </div>
+                        <div class="log-title">Drafting 'Fabrication & Philosophy' Zine</div>
+                        <div class="log-desc">Exploring metaphors for digital-physical systems and translating foundational design theories into cozy, illustrated visual logs.</div>
+                        <div class="log-links">
+                            <!-- Swap out 'zine_draft.pdf' with your actual file name when uploading -->
+                            <a href="zine_draft.pdf" target="_blank">view pdf ↗</a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="gallery">
+                <h2>snapshots / moments</h2>
+                <div class="photo-gallery">
+                    
+                    <div class="gallery-container">
+                        <div class="gallery-item">
+                            <img src="gallery1.jpg" alt="Miriam rowing on the water">
+                        </div>
+                        <div class="gallery-caption">on the water</div>
+                    </div>
+
+                    <div class="gallery-container">
+                        <div class="gallery-item">
+                            <img src="gallery2.jpg" alt="Laser cutting digital fabrication project">
+                        </div>
+                        <div class="gallery-caption">making items</div>
+                    </div>
+
+                    <div class="gallery-container">
+                        <div class="gallery-item">
+                            <img src="gallery3.jpg" alt="Vienna architecture or cafe life">
+                        </div>
+                        <div class="gallery-caption">vienna days</div>
                     </div>
 
                 </div>
@@ -305,7 +556,7 @@ series = {FDG '24}
         </main>
 
         <footer>
-            <p>© 2026 miriam brody • made with the help of gemini</p>
+            <p>© 2026 miriam brody • made with gemini</p>
         </footer>
     </div>
 

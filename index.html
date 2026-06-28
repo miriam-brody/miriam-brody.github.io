@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miriam Brody</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     
     <style>
         :root {
@@ -157,21 +158,33 @@
 
         .meta-links {
             display: flex;
-            gap: 1.25rem;
+            gap: 1rem;
             font-size: 0.9rem;
             margin-top: 2.5rem;
+            justify-content: center;
         }
         .meta-links a { 
             color: var(--muted); 
             border: 1px solid var(--line); 
-            padding: 0.35rem 0.85rem; 
-            border-radius: 15px;
-            font-size: 0.85rem;
+            padding: 0.5rem; 
+            border-radius: 50%; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease-in-out;
+            background-color: transparent;
+            width: 38px;
+            height: 38px;
+        }
+        .meta-links a i {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
         }
         .meta-links a:hover { 
             color: var(--text); 
             border-color: var(--accent);
-            background-color: transparent;
+            background-color: var(--accent-bg);
         }
 
         section {
@@ -418,7 +431,7 @@
             <div class="intro-block">
                 <div class="intro-text">
                     <p>
-                        I'm an incoming computer science PhD student at the University of Washington (<a href="https://www.cs.washington.edu/" target="_blank">Paul G. Allen School</a>), where I'll be working with <a href="https://faculty.washington.edu/wobbrock/" target="_blank">Professor Jacob Wobbrock</a>. 
+                        I'm an incoming computer science PhD student at the University of Washington (<a href="https://www.cs.washington.edu/" target="_blank">Paul G. Allen School</a>), where I'll be working with <a href="https://faculty.washington.edu/wobbrock/" target="_blank">Professor Jacob Wobbrock</a>.
                     </p>
                     <p>
                         My work lives at the intersection of Human-Computer Interaction (HCI), accessibility, and creativity support, with a growing focus on exploring how humans and AI systems can collaborate dynamically without stripping away human agency.
@@ -428,10 +441,10 @@
                     </p>
                     
                     <div class="meta-links">
-                        <a href="mailto:mabrody@uw.edu">email</a>
-                        <a href="https://www.linkedin.com/in/miriambrody/" target="_blank">linkedin</a>
-                        <a href="https://scholar.google.com/citations?user=9Sby5PkAAAAJ&hl=en" target="_blank">scholar</a>
-                        <a href="cv.pdf">cv</a>
+                        <a href="mailto:mabrody@uw.edu" title="Email" aria-label="Email"><i data-lucide="mail"></i></a>
+                        <a href="https://www.linkedin.com/in/miriambrody/" target="_blank" title="LinkedIn" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+                        <a href="https://scholar.google.com/citations?user=9Sby5PkAAAAJ&hl=en" target="_blank" title="Google Scholar" aria-label="Google Scholar"><i data-lucide="graduation-cap"></i></a>
+                        <a href="cv.pdf" target="_blank" title="CV / Resume" aria-label="CV"><i data-lucide="file-text"></i></a>
                     </div>
                 </div>
             </div>
@@ -458,6 +471,8 @@
                         <div class="venue">Proceedings of the 27th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS '25)</div>
                         <div class="links">
                             <a href="https://dl.acm.org/doi/10.1145/3663547.3746331" target="_blank">publisher link</a>
+                            <a href="expanding_norms_assets25.pdf" target="_blank">pdf ↗</a>
+                            <a href="zine_draft.pdf" target="_blank">zine pdf ↗</a>
                             <button class="bibtex-btn" data-bibtex="@inproceedings{10.1145/3663547.3746331,
 author = {Brody, Miriam and Rodrigues, Izabella and E, Jane L. and Li, Jingyi},
 title = {Expanding Norms, Negotiating Bodies: How Artists with Disabilities Perceive and Use Creative Tools},
@@ -472,7 +487,7 @@ articleno = {41},
 numpages = {14},
 series = {ASSETS '25}
 }">bibtex</button>
-                            <span class="copy-feedback">copied!</span>
+                            <span class="copy-feedback">copied! 🍉</span>
                         </div>
                     </div>
 
@@ -483,6 +498,7 @@ series = {ASSETS '25}
                         <div class="venue">Proceedings of the 19th International Conference on the Foundations of Digital Games (FDG '24)</div>
                         <div class="links">
                             <a href="https://dl.acm.org/doi/abs/10.1145/3649921.3656978" target="_blank">publisher link</a>
+                            <a href="retrofit_fdg24.pdf" target="_blank">pdf ↗</a>
                             <button class="bibtex-btn" data-bibtex="@inproceedings{10.1145/3649921.3656978,
 author = {Osborn, Joseph Carter and Wieser, Katiana, Miriam Brody},
 title = {RetroFit: Post-Facto Accessibility for Retro Games},
@@ -498,7 +514,7 @@ numpages = {4},
 keywords = {accessibility, automated game design learning, scene understanding},
 series = {FDG '24}
 }">bibtex</button>
-                            <span class="copy-feedback">copied!</span>
+                            <span class="copy-feedback">copied! 👾</span>
                         </div>
                     </div>
 
@@ -518,8 +534,7 @@ series = {FDG '24}
                         <div class="log-title">Drafting 'Fabrication & Philosophy' Zine</div>
                         <div class="log-desc">Exploring metaphors for digital-physical systems and translating foundational design theories into cozy, illustrated visual logs.</div>
                         <div class="log-links">
-                            <!-- Swap out 'zine_draft.pdf' with your actual file name when uploading -->
-                            <a href="lucy&terryZine2026.pdf" target="_blank">view pdf ↗</a>
+                            <a href="zine_draft.pdf" target="_blank">view pdf ↗</a>
                         </div>
                     </div>
 
@@ -556,11 +571,15 @@ series = {FDG '24}
         </main>
 
         <footer>
-            <p>© 2026 miriam brody • made with help from gemini</p>
+            <p>© 2026 miriam brody • made with gemini</p>
         </footer>
     </div>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
+        // Initialize Icons
+        lucide.createIcons();
+
         const btn = document.getElementById('tier');
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark');

@@ -1,456 +1,367 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miriam Brody</title>
+    <meta name="description" content="Miriam Brody is an incoming computer science PhD student at the University of Washington working on accessibility, creativity support, and human-AI collaboration.">
     <link rel="icon" type="image/png" href="cat.png">
+
+    <!-- Set the theme before first paint so there is no flash -->
+    <script>
+        (function () {
+            var theme = null;
+            try { theme = localStorage.getItem('theme'); } catch (e) {}
+            if (theme !== 'dark' && theme !== 'light') {
+                theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Young+Serif&display=swap" rel="stylesheet">
+
     <style>
+        /* Two inks on paper, like a riso print.
+           Light: cobalt ink on cool white paper.
+           Dark: the same sheet printed on blue paper. */
         :root {
-            --bg: #fcfbf9;         /* Soft milky white */
-            --text: #3c3936;       /* Soft warm charcoal */
-            --muted: #a39e99;      /* Delicate cloud gray */
-            --accent: #e5a995;     /* Soft dusty peach/rose */
-            --accent-bg: #f7edea;  /* Faint blush tint */
-            --line: #f0ede9;       /* Barely-there soft cream borders */
-            --tag-zine: #fdf5e2;   /* Soft pudding yellow */
-            --sans: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --paper: #f3f5f9;
+            --ink: #1b2790;
+            --muted: #555b7a;
+            --pink: #ff8cc0;
+            --on-pink: #1b2790;
+
+            --display: "Young Serif", Georgia, "Times New Roman", serif;
+            --sans: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+            --gutter: clamp(1.25rem, 4vw, 3rem);
+            --side: 13rem;
+        }
+        :root[data-theme="dark"] {
+            --paper: #0f1747;
+            --ink: #f3f5f9;
+            --muted: #b5bbe6;
+            --pink: #ff8cc0;
+            --on-pink: #0f1747;
+            color-scheme: dark;
         }
 
-        body.dark {
-            --bg: #1e1b1a;
-            --text: #e8e3df;
-            --muted: #8c8580;
-            --accent: #f2c2b1;
-            --accent-bg: #2d2523;
-            --line: #2b2624;
-            --tag-zine: #333023;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { -webkit-text-size-adjust: 100%; }
+
         body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
             font-family: var(--sans);
-            color: var(--text);
-            background-color: var(--bg);
+            font-size: 1.0625rem;
             line-height: 1.65;
-            padding: 5rem 2rem;
-            transition: background 0.3s, color 0.3s;
-            letter-spacing: -0.01em;
         }
 
-        .container {
-            max-width: 620px;
+        .page {
+            max-width: 70rem;
             margin: 0 auto;
+            padding: var(--gutter) var(--gutter) 5rem;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 4rem;
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
-        .header-title-area {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .skip {
+            position: absolute;
+            left: 1rem;
+            top: -4rem;
+            background: var(--ink);
+            color: var(--paper);
+            padding: 0.6rem 1rem;
+            z-index: 10;
         }
+        .skip:focus { top: 1rem; }
 
-        h1 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--accent-bg);
-            color: var(--text);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            width: fit-content;
-            border: 1px solid rgba(229, 169, 149, 0.15);
-        }
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            margin-right: 0.5rem;
-            display: inline-block;
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.5; }
-        }
-
-        .toggle-btn {
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-family: var(--sans);
-            padding: 4px 8px;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-        .toggle-btn:hover { 
-            color: var(--text); 
-            background-color: var(--line);
-        }
-
-        .photo-header-wrap {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 3.5rem;
-            width: 100%;
-        }
-
-        .profile-photo {
-            width: 190px;
-            height: 190px;
-            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-            object-fit: cover;
-            border: 4px solid #fff;
-            box-shadow: 0 8px 24px rgba(189, 175, 165, 0.15);
-            background: #fff;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .photo-header-wrap:hover .profile-photo {
-            border-radius: 50% 50% 50% 50%;
-            transform: scale(1.04) rotate(2deg);
-            box-shadow: 0 12px 28px rgba(189, 175, 165, 0.25);
-        }
-        body.dark .profile-photo {
-            border-color: #2b2624;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        .intro-block {
-            margin-bottom: 3.5rem;
-        }
-        
-        .intro-text p {
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            font-weight: 400;
-        }
-
+        /* Links */
         a {
-            color: var(--text);
-            text-decoration: none;
-            border-bottom: 2px solid var(--accent-bg);
-            transition: all 0.2s ease-in-out;
+            color: inherit;
+            text-decoration: underline;
+            text-decoration-thickness: 0.08em;
+            text-underline-offset: 0.18em;
         }
-        a:hover {
-            color: var(--text);
-            background-color: var(--accent-bg);
-            border-color: var(--accent);
+        a:hover, .linklike:hover {
+            background: var(--pink);
+            color: var(--on-pink);
         }
-
-        .meta-links {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.9rem;
-            margin-top: 2.5rem;
-            justify-content: center;
-        }
-        .meta-links a { 
-            color: var(--muted); 
-            border: 1px solid var(--line); 
-            padding: 0.5rem; 
-            border-radius: 50%; 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease-in-out;
-            background-color: transparent;
-            width: 38px;
-            height: 38px;
-        }
-        .meta-links a i {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2;
-        }
-        .meta-links a:hover { 
-            color: var(--text); 
-            border-color: var(--accent);
-            background-color: var(--accent-bg);
+        :focus-visible {
+            outline: 3px solid var(--ink);
+            outline-offset: 3px;
         }
 
-        section {
-            margin-bottom: 4rem;
-            padding-top: 2.5rem;
-            border-top: 1px solid var(--line);
+        /* Masthead */
+        .masthead {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-areas:
+                "toggle toggle"
+                "name   where";
+            align-items: end;
+            column-gap: 2rem;
+            row-gap: 0.5rem;
+            margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
         }
+
+        .theme-toggle {
+            grid-area: toggle;
+            justify-self: end;
+            appearance: none;
+            background: none;
+            border: 0;
+            padding: 0.6rem 0.25rem;
+            font: inherit;
+            font-size: 0.95rem;
+            color: inherit;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-thickness: 0.08em;
+            text-underline-offset: 0.18em;
+        }
+        .theme-toggle:hover { background: var(--pink); color: var(--on-pink); }
+
+        /* The one loud thing on the page: the name, printed twice,
+           with the pink plate slightly out of register. */
+        .name {
+            grid-area: name;
+            margin: 0;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(4rem, 22vw, 10rem);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            text-shadow: 0.045em 0.045em 0 var(--pink);
+            animation: register 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        }
+        .name span { display: block; }
+
+        @keyframes register {
+            from { text-shadow: 0 0 0 var(--pink); }
+            to   { text-shadow: 0.045em 0.045em 0 var(--pink); }
+        }
+
+        .where {
+            grid-area: where;
+            margin: 0;
+            max-width: 13rem;
+            padding-bottom: 0.9rem;
+        }
+
+        /* Margin layout: left column is for headings, photo, and links */
+        .row {
+            display: grid;
+            grid-template-columns: var(--side) minmax(0, 1fr);
+            gap: 1.5rem 3rem;
+            margin-top: clamp(3.5rem, 8vw, 6rem);
+        }
+        .row.first { margin-top: 0; }
 
         h2 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--muted);
-            margin-bottom: 1.75rem;
-            text-transform: lowercase;
-            letter-spacing: 0.05em;
+            margin: 0;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: 1.75rem;
+            line-height: 1.1;
         }
 
-        .thoughts-stream {
-            font-size: 0.98rem;
-        }
-        .thoughts-stream p {
-            margin-bottom: 1.25rem;
-        }
-        .keyword {
-            background-color: var(--accent-bg);
-            color: var(--text);
-            padding: 0.1rem 0.4rem;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        .item-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .pub-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            padding: 1rem;
-            border-radius: 16px;
-            transition: background 0.2s;
-        }
-        .pub-item:hover {
-            background-color: var(--accent-bg);
-        }
-
-        .title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-        .authors {
-            font-size: 0.88rem;
-            color: var(--text);
-            opacity: 0.85;
-        }
-        .venue {
-            font-size: 0.88rem;
-            color: var(--muted);
-        }
-        .links {
-            font-size: 0.82rem;
-            margin-top: 0.4rem;
-            display: flex;
-            align-items: center;
-        }
-        .links a, .bibtex-btn {
-            color: var(--text);
-            opacity: 0.6;
-            border: 1px solid var(--line);
-            padding: 0.2rem 0.6rem;
-            border-radius: 10px;
-            margin-right: 0.5rem;
-            cursor: pointer;
-            background: #fff;
-            font-size: 0.8rem;
-            font-family: var(--sans);
-            transition: all 0.2s;
-        }
-        body.dark .links a, body.dark .bibtex-btn {
-            background: #2b2624;
-        }
-        .links a:hover, .bibtex-btn:hover { 
-            opacity: 1;
-            border-color: var(--accent);
-            background-color: var(--bg);
-        }
-        
-        .copy-feedback {
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin-left: 0.25rem;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .copy-feedback.show { opacity: 1; }
-
-        /* MINIMAL EDITORIAL TIMELINE */
-        .log-timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding-left: 0.5rem;
-            border-left: 2px solid var(--line);
-        }
-        .log-entry {
+        /* About */
+        .portrait {
             position: relative;
-            padding-left: 1.5rem;
+            isolation: isolate;
+            margin: 0 0 2.25rem;
+            max-width: var(--side);
         }
-        .log-entry::before {
-            content: '';
+        .portrait::before {
+            content: "";
             position: absolute;
-            left: -5px;
-            top: 6px;
-            width: 8px;
-            height: 8px;
-            background: var(--bg);
-            border: 2px solid var(--muted);
-            border-radius: 50%;
-            transition: background 0.2s;
+            inset: 0;
+            transform: translate(0.7rem, 0.7rem);
+            background: var(--pink);
+            z-index: -1;
         }
-        .log-entry:hover::before {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        .log-meta {
-            display: inline-flex;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-        .log-tag {
-            padding: 0.15rem 0.5rem;
-            border-radius: 6px;
-            letter-spacing: 0.02em;
-        }
-        .log-tag.zine { background-color: var(--tag-zine); }
-        
-        .log-title {
-            font-size: 1.02rem;
-            font-weight: 600;
-            margin-bottom: 0.15rem;
-        }
-        .log-desc {
-            font-size: 0.92rem;
-            opacity: 0.85;
-            margin-bottom: 0.5rem;
-        }
-        .log-links {
-            font-size: 0.8rem;
-        }
-        .log-links a {
-            color: var(--muted);
-            border-bottom: 1px solid var(--line);
-        }
-        .log-links a:hover {
-            color: var(--text);
-            border-color: var(--accent);
-        }
-
-        /* GALLERY GRID */
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        .gallery-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .gallery-item {
-            position: relative;
-            aspect-ratio: 1 / 1;
-            overflow: hidden;
-            border-radius: 18px;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(189, 175, 165, 0.1);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background-color: var(--line);
+        .portrait img {
+            display: block;
             width: 100%;
-        }
-        body.dark .gallery-item {
-            border-color: #2b2624;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
+            aspect-ratio: 1;
             object-fit: cover;
-        }
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(1deg);
-            z-index: 2;
-        }
-        .gallery-caption {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-top: 0.4rem;
-            font-style: italic;
+            object-position: 50% 25%;
+            background: var(--paper);
         }
 
-        footer {
+        .contact {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .contact a { display: inline-block; padding: 0.25rem 0; }
+
+        .intro p {
+            max-width: 39rem;
+            margin: 0 0 1.4em;
+        }
+        .intro .lede {
+            font-family: var(--display);
+            font-size: clamp(1.45rem, 3vw, 1.85rem);
+            line-height: 1.25;
+            max-width: 34rem;
+            margin-bottom: 1.1em;
+        }
+
+        /* Publications and making */
+        .entries {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 3rem;
+        }
+        .entry {
+            display: grid;
+            grid-template-columns: 4rem minmax(0, 1fr);
+            gap: 0 1rem;
+        }
+        .year, .entry-title {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: 1.3rem;
+            line-height: 1.25;
+            margin: 0;
+        }
+        .entry-title { margin-bottom: 0.55rem; max-width: 38rem; }
+        .entry p { margin: 0; }
+        .entry .detail { max-width: 38rem; margin-bottom: 0.25rem; }
+        .entry .venue { color: var(--muted); max-width: 38rem; }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0 1.5rem;
+            margin-top: 0.6rem;
+        }
+        .actions a, .linklike { padding: 0.35rem 0; }
+
+        .linklike {
+            appearance: none;
+            background: none;
+            border: 0;
+            margin: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-thickness: 0.08em;
+            text-underline-offset: 0.18em;
+        }
+        .copied { color: var(--muted); }
+
+        /* Snapshots */
+        .snaps {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.75rem 1.25rem;
+        }
+        .snaps figure { margin: 0; }
+        .snaps img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            background: var(--muted);
+        }
+        .snaps figcaption {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        .foot {
             margin-top: 6rem;
-            font-size: 0.8rem;
             color: var(--muted);
-            text-align: center;
+            font-size: 0.95rem;
+        }
+        .foot p { margin: 0; }
+
+        @media (max-width: 52rem) {
+            .row { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+            .masthead {
+                grid-template-columns: 1fr;
+                grid-template-areas: "toggle" "name" "where";
+            }
+            .where { padding-bottom: 0; margin-top: 0.75rem; }
+            .portrait { max-width: 12rem; }
         }
 
-        @media (max-width: 600px) {
-            body { padding: 3rem 1.25rem; }
-            header { margin-bottom: 2.5rem; }
-            .photo-header-wrap { margin-bottom: 2.5rem; }
-            .profile-photo { width: 150px; height: 150px; }
-            .meta-links { flex-wrap: wrap; gap: 0.5rem; }
-            .photo-gallery { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: 36rem) {
+            .entry { grid-template-columns: 3.25rem minmax(0, 1fr); gap: 0 0.75rem; }
+            .snaps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .snaps li:first-child { grid-column: 1 / -1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .name { animation: none; }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <a class="skip" href="#main">Skip to content</a>
 
-    <div class="container">
-        <header>
-            <div class="header-title-area">
-                <h1>miriam brody</h1>
-                <div class="status-pill">
-                    <span class="status-dot"></span>📍 researching in vienna, austria
-                </div>
-            </div>
-            <button class="toggle-btn" id="tier">switch appearance</button>
+    <div class="page">
+        <header class="masthead">
+            <button class="theme-toggle" id="theme-toggle" type="button">dark mode</button>
+            <h1 class="name"><span>miriam</span> <span>brody</span></h1>
+            <p class="where">researching in vienna, austria</p>
         </header>
 
-        <main>
-            <div class="photo-header-wrap">
-                <img src="miriam-photo.png" alt="Photo of Miriam Brody. Brown hair and green eyes." class="profile-photo">
-            </div>
+        <main id="main">
+            <section class="row first" aria-label="About">
+                <aside>
+                    <figure class="portrait">
+                        <img src="miriam-photo.png" alt="Photo of Miriam Brody. Brown hair and green eyes.">
+                    </figure>
+                    <ul class="contact">
+                        <li><a href="mailto:mabrody@uw.edu">mabrody@uw.edu</a></li>
+                        <li><a href="https://www.linkedin.com/in/miriambrody/" target="_blank">linkedin</a></li>
+                        <li><a href="https://scholar.google.com/citations?user=9Sby5PkAAAAJ&amp;hl=en" target="_blank">google scholar</a></li>
+                        <li><a href="cv.pdf" target="_blank">cv</a></li>
+                    </ul>
+                </aside>
 
-            <div class="intro-block">
-    <div class="intro-text">
-<p>
-    I'm an incoming computer science PhD student at the <a href="https://www.cs.washington.edu/" target="_blank">University of Washington (Paul G. Allen School)</a>, where I'll be advised by Professor <a href="https://faculty.washington.edu/wobbrock/" target="_blank">Jacob Wobbrock</a>.
-</p>
+                <div class="intro">
+                    <p class="lede">
+                        I'm an incoming computer science PhD student at the <a href="https://www.cs.washington.edu/" target="_blank">University of Washington (Paul G. Allen School)</a>, where I'll be advised by Professor <a href="https://faculty.washington.edu/wobbrock/" target="_blank">Jacob Wobbrock</a>.
+                    </p>
 
-<p>
-My work sits at the intersection of Human–Computer Interaction (HCI), accessibility, and creativity support. I focus on bringing accessible design to the forefront of technology to enable everyone to confidently meet daily needs, learn, and express themselves creatively. I am interested in how disabled people collaborate with generative AI to design an AI future that reduces harm and enhances accessibility. 
-</p>
+                    <p>
+                        My work sits at the intersection of Human–Computer Interaction (HCI), accessibility, and creativity support. I focus on bringing accessible design to the forefront of technology to enable everyone to confidently meet daily needs, learn, and express themselves creatively. I am interested in how disabled people collaborate with generative AI to design an AI future that reduces harm and enhances accessibility.
+                    </p>
 
-<p>
-    Before this, I graduated from <a href="https://www.pomona.edu/" target="_blank">Pomona College</a> with a Bachelor of Arts in Computer Science, working under the mentorship of Professor <a href="https://www.jingyili.com/" target="_blank">Jingyi Li</a> and <a href="https://janeparapruek.github.io/" target="_blank">Jane L. E.</a> During my undergraduate studies, I spent time as an exchange student at <a href="https://www.swarthmore.edu/" target="_blank">Swarthmore College</a> and <a href="https://www.jesus.cam.ac.uk/" target="_blank">Jesus College, Cambridge</a>. I also spent three summers as a software development intern at Amazon.
-</p>
-        
-        <div class="meta-links">
-            <a href="mailto:mabrody@uw.edu" title="Email" aria-label="Email"><i data-lucide="mail"></i></a>
-    <a href="https://www.linkedin.com/in/miriambrody/" target="_blank" title="LinkedIn" aria-label="LinkedIn" style="display: inline-flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin" style="width: 1em; height: 1em;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-    </a>
-            <a href="https://scholar.google.com/citations?user=9Sby5PkAAAAJ&hl=en" target="_blank" title="Google Scholar" aria-label="Google Scholar"><i data-lucide="graduation-cap"></i></a>
-            <a href="cv.pdf" target="_blank" title="CV / Resume" aria-label="CV"><i data-lucide="file-text"></i></a>
-        </div>
-    </div>
-</div>
+                    <p>
+                        Before this, I graduated from <a href="https://www.pomona.edu/" target="_blank">Pomona College</a> with a Bachelor of Arts in Computer Science, working under the mentorship of Professor <a href="https://www.jingyili.com/" target="_blank">Jingyi Li</a> and <a href="https://janeparapruek.github.io/" target="_blank">Jane L. E.</a> During my undergraduate studies, I spent time as an exchange student at <a href="https://www.swarthmore.edu/" target="_blank">Swarthmore College</a> and <a href="https://www.jesus.cam.ac.uk/" target="_blank">Jesus College, Cambridge</a>. I also spent three summers as a software development intern at Amazon.
+                    </p>
+                </div>
+            </section>
+
 <!--
 <section id="focus">
     <h2>research directions</h2>
@@ -470,21 +381,22 @@ My work sits at the intersection of Human–Computer Interaction (HCI), accessib
 </section>
 -->
 
+            <section class="row" id="writing" aria-labelledby="writing-h">
+                <h2 id="writing-h">publications</h2>
+                <ul class="entries">
 
-            <section id="writing">
-                <h2>publications</h2>
-                <div class="item-list">
-                    
                     <!-- ASSETS 2025 -->
-                    <div class="pub-item">
-                        <div class="title">Expanding Norms, Negotiating Bodies: How Artists with Disabilities Perceive and Use Creative Tools</div>
-                        <div class="authors"><strong>Miriam Brody</strong>, Izabella Rodrigues, Jane L. E, Jingyi Li</div>
-                        <div class="venue">Proceedings of the 27th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS '25)</div>
-                        <div class="links">
-                            <a href="https://dl.acm.org/doi/10.1145/3663547.3746331" target="_blank">publisher link</a>
-                            <a href="artists-disabilities.pdf" target="_blank">pdf ↗</a>
-                            <a href="artists-disabilities-zine.pdf" target="_blank">zine pdf ↗</a>
-                            <button class="bibtex-btn" data-bibtex="@inproceedings{10.1145/3663547.3746331,
+                    <li class="entry">
+                        <span class="year">2025</span>
+                        <div>
+                            <h3 class="entry-title">Expanding Norms, Negotiating Bodies: How Artists with Disabilities Perceive and Use Creative Tools</h3>
+                            <p class="detail"><strong>Miriam Brody</strong>, Izabella Rodrigues, Jane L. E, Jingyi Li</p>
+                            <p class="venue">Proceedings of the 27th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS '25)</p>
+                            <div class="actions">
+                                <a href="https://dl.acm.org/doi/10.1145/3663547.3746331" target="_blank">publisher link</a>
+                                <a href="artists-disabilities.pdf" target="_blank">pdf</a>
+                                <a href="artists-disabilities-zine.pdf" target="_blank">zine pdf</a>
+                                <button type="button" class="linklike bibtex-btn" data-bibtex="@inproceedings{10.1145/3663547.3746331,
 author = {Brody, Miriam and Rodrigues, Izabella and E, Jane L. and Li, Jingyi},
 title = {Expanding Norms, Negotiating Bodies: How Artists with Disabilities Perceive and Use Creative Tools},
 year = {2025},
@@ -498,20 +410,23 @@ articleno = {41},
 numpages = {14},
 series = {ASSETS '25}
 }">bibtex</button>
-                            <span class="copy-feedback">copied! (♡.♡)</span>
+                                <span class="copied" role="status"></span>
+                            </div>
                         </div>
-                    </div>
+                    </li>
 
                     <!-- FDG 2024 -->
-                    <div class="pub-item">
-                        <div class="title">RetroFit: Post-Facto Accessibility for Retro Games</div>
-                        <div class="authors">Joseph Carter Osborn, Katiana Wieser, <strong>Miriam Brody</strong></div>
-                        <div class="venue">Proceedings of the 19th International Conference on the Foundations of Digital Games (FDG '24)</div>
-                        <div class="links">
-                            <a href="https://dl.acm.org/doi/abs/10.1145/3649921.3656978" target="_blank">publisher link</a>
-                            <a href="retro-fit.pdf" target="_blank">pdf ↗</a>
-                            <button class="bibtex-btn" data-bibtex="@inproceedings{10.1145/3649921.3656978,
-author = {Osborn, Joseph Carter and Wieser, Katiana, Miriam Brody},
+                    <li class="entry">
+                        <span class="year">2024</span>
+                        <div>
+                            <h3 class="entry-title">RetroFit: Post-Facto Accessibility for Retro Games</h3>
+                            <p class="detail">Joseph Carter Osborn, Katiana Wieser, <strong>Miriam Brody</strong></p>
+                            <p class="venue">Proceedings of the 19th International Conference on the Foundations of Digital Games (FDG '24)</p>
+                            <div class="actions">
+                                <a href="https://dl.acm.org/doi/abs/10.1145/3649921.3656978" target="_blank">publisher link</a>
+                                <a href="retro-fit.pdf" target="_blank">pdf</a>
+                                <button type="button" class="linklike bibtex-btn" data-bibtex="@inproceedings{10.1145/3649921.3656978,
+author = {Osborn, Joseph Carter and Wieser, Katiana and Brody, Miriam},
 title = {RetroFit: Post-Facto Accessibility for Retro Games},
 year = {2024},
 isbn = {97984007095555},
@@ -525,99 +440,113 @@ numpages = {4},
 keywords = {accessibility, automated game design learning, scene understanding},
 series = {FDG '24}
 }">bibtex</button>
-                            <span class="copy-feedback">copied! (♡.♡)</span>
+                                <span class="copied" role="status"></span>
+                            </div>
                         </div>
-                    </div>
+                    </li>
 
-                </div>
+                </ul>
             </section>
 
-            <!-- EDITORIAL MINIMAL MAKER TIMELINE -->
-            <section id="creative-log">
-                <h2>making</h2>
-                <div class="log-timeline">
-                    
-                    <div class="log-entry">
-                        <div class="log-meta">
-                            <span class="log-tag zine">Zines</span>
-                            <span style="color: var(--muted);">/ Spring 2026</span>
-                        </div>
-                        <div class="log-title">Generative Frictions</div>
-                        <div class="log-desc">Exploring past and present conversations about technology between Terry Winograd and Lucy Suchman</div>
-                        <div class="log-links">
-                            <a href="generative-frictions-zine.pdf" target="_blank">view pdf ↗</a>
-                        </div>
-                    </div>
+            <section class="row" id="creative-log" aria-labelledby="making-h">
+                <h2 id="making-h">making</h2>
+                <ul class="entries">
 
-                </div>
+                    <li class="entry">
+                        <span class="year">2026</span>
+                        <div>
+                            <h3 class="entry-title">Generative Frictions</h3>
+                            <p class="detail">Exploring past and present conversations about technology between Terry Winograd and Lucy Suchman</p>
+                            <p class="venue">zine, spring 2026</p>
+                            <div class="actions">
+                                <a href="generative-frictions-zine.pdf" target="_blank">view pdf</a>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
             </section>
 
-            <section id="gallery">
-                <h2>snapshots</h2>
-                <div class="photo-gallery">
-                    
-                    <div class="gallery-container">
-                        <div class="gallery-item">
+            <section class="row" id="gallery" aria-labelledby="snaps-h">
+                <h2 id="snaps-h">snapshots</h2>
+                <ul class="snaps">
+
+                    <li>
+                        <figure>
                             <img src="rowing.png" alt="Miriam rowing on the water">
-                        </div>
-                        <div class="gallery-caption">rowing in cambridge</div>
-                    </div>
+                            <figcaption>rowing in cambridge</figcaption>
+                        </figure>
+                    </li>
 
-                    <div class="gallery-container">
-                        <div class="gallery-item">
+                    <li>
+                        <figure>
                             <img src="seattle.png" alt="Miriam standing in front of water in seattle at sunset">
-                        </div>
-                        <div class="gallery-caption">(˶ᵔ ᵕ ᵔ˶)</div>
-                    </div>
+                            <figcaption aria-hidden="true">(˶ᵔ ᵕ ᵔ˶)</figcaption>
+                        </figure>
+                    </li>
 
-                    <div class="gallery-container">
-                        <div class="gallery-item">
+                    <li>
+                        <figure>
                             <img src="vienna.png" alt="Photo of Vienna Votivkirche at Sunset">
-                        </div>
-                        <div class="gallery-caption">vienna days</div>
-                    </div>
+                            <figcaption>vienna days</figcaption>
+                        </figure>
+                    </li>
 
-                </div>
+                </ul>
             </section>
         </main>
 
-        <footer>
-            <p>© 2026 miriam brody • made with support from gemini</p>
+        <footer class="foot">
+            <p>© 2026 miriam brody, made with support from gemini</p>
         </footer>
     </div>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        // Initialize Icons
-        lucide.createIcons();
+        (function () {
+            var root = document.documentElement;
+            var toggle = document.getElementById('theme-toggle');
 
-        const btn = document.getElementById('tier');
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark');
-        }
+            function setLabel() {
+                toggle.textContent = root.getAttribute('data-theme') === 'dark' ? 'light mode' : 'dark mode';
+            }
+            setLabel();
 
-        btn.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            const isDark = document.body.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
+            toggle.addEventListener('click', function () {
+                var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('theme', next); } catch (e) {}
+                setLabel();
+            });
 
-        document.querySelectorAll('.bibtex-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const bibtexText = button.getAttribute('data-bibtex');
-                const feedback = button.nextElementSibling;
+            // Tell screen reader users when a link opens a new tab
+            document.querySelectorAll('a[target="_blank"]').forEach(function (a) {
+                a.setAttribute('rel', 'noopener');
+                var note = document.createElement('span');
+                note.className = 'sr-only';
+                note.textContent = ' (opens in new tab)';
+                a.appendChild(note);
+            });
 
-                navigator.clipboard.writeText(bibtexText).then(() => {
-                    feedback.classList.add('show');
-                    setTimeout(() => {
-                        feedback.classList.remove('show');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy text: ', err);
+            // Copy bibtex
+            document.querySelectorAll('.bibtex-btn').forEach(function (button) {
+                var status = button.parentNode.querySelector('.copied');
+                var timer;
+
+                function say(message) {
+                    status.textContent = message;
+                    clearTimeout(timer);
+                    timer = setTimeout(function () { status.textContent = ''; }, 2000);
+                }
+
+                button.addEventListener('click', function () {
+                    navigator.clipboard.writeText(button.getAttribute('data-bibtex')).then(function () {
+                        say('copied! (♡.♡)');
+                    }).catch(function () {
+                        say('could not copy, try again');
+                    });
                 });
             });
-        });
+        })();
     </script>
-
 </body>
 </html>

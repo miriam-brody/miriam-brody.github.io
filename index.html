@@ -272,6 +272,42 @@
         }
         .copied { color: var(--muted); }
 
+
+        /* Video embed */
+        .video {
+            position: relative;
+            max-width: 38rem;
+            margin-top: 0.9rem;
+            aspect-ratio: 16 / 9;
+            background: var(--muted);
+        }
+        .video iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Teaser images: a small preview that links to the pdf */
+        .tease {
+            margin-top: 1.1rem;
+        }
+        .thumb {
+            display: block;
+            width: min(100%, 11rem);
+            text-decoration: none;
+        }
+        .thumb:hover { background: none; }
+        .thumb img {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: var(--muted);
+            outline: 1px solid var(--muted);
+            outline-offset: -1px;
+        }
+
         /* Snapshots */
         .snaps {
             list-style: none;
@@ -356,15 +392,10 @@
  
                    <p>
 My work focuses on designing and evaluating accessible creativity support tools (CSTs) and responsible AI. I am currently exploring the role of emotional safety in CST design and how creativity itself can promote accessibility and well-being. Accessibility is often viewed as a constrained way to accommodate select groups and centers on replicating normative experiences; my research expands accessibility beyond compliance frameworks toward approaches that enable everyone to meet their needs, pursue education, and express creativity.
+                   </p>
 
-
-                       
-<p>                       I’ve published at ASSETS and FDG, with work under review at CHI and ICSE. My work has been recognized by the Computing Research Association (CRA) with the CRA Outstanding Undergraduate Researcher Honorable Mention and through scholarship awards from Amazon and PG&E.
-</p>
-
-
-
- 
+                   <p>
+                       I’ve published at ASSETS and FDG, with work under review at CHI and ICSE. My work has been recognized by the Computing Research Association (CRA) with the CRA Outstanding Undergraduate Researcher Honorable Mention and through scholarship awards from Amazon and PG&amp;E.
                    </p>
  
                    <p>
@@ -425,6 +456,9 @@ series = {ASSETS '25}
 }">bibtex</button>
                                 <span class="copied" role="status"></span>
                             </div>
+                            <div class="tease">
+                                <a class="thumb" href="artists-disabilities.pdf" target="_blank"><img src="assets25-teaser.png" alt="Preview of the paper Expanding Norms, Negotiating Bodies" loading="lazy"></a>
+                            </div>
                         </div>
                     </li>
 
@@ -455,6 +489,9 @@ series = {FDG '24}
 }">bibtex</button>
                                 <span class="copied" role="status"></span>
                             </div>
+                            <div class="tease">
+                                <a class="thumb" href="retro-fit.pdf" target="_blank"><img src="fdg24-teaser.png" alt="Preview of the paper RetroFit" loading="lazy"></a>
+                            </div>
                         </div>
                     </li>
 
@@ -473,6 +510,9 @@ series = {FDG '24}
                             <div class="actions">
                                 <a href="generative-frictions-zine.pdf" target="_blank">view pdf</a>
                             </div>
+                            <div class="tease">
+                                <a class="thumb" href="generative-frictions-zine.pdf" target="_blank"><img src="generativefrictions-teaser.png" alt="Preview of the Generative Frictions zine" loading="lazy"></a>
+                            </div>
                         </div>
                     </li>
 
@@ -484,6 +524,9 @@ series = {FDG '24}
                             <p class="detail">A short story with lots of jam, oh and there's also a cat named Soufflé</p>
                             <div class="actions">
                                 <a href="Portrait of a Jamstress-Miriam-Brody.com.pdf" target="_blank">view pdf</a>
+                            </div>
+                            <div class="tease">
+                                <a class="thumb" href="Portrait%20of%20a%20Jamstress-Miriam-Brody.com.pdf" target="_blank"><img src="elgaN-teaser.png" alt="Preview of the short story Portrait of a Jamstress" loading="lazy"></a>
                             </div>
                         </div>
                     </li>
